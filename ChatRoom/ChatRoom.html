@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+	<title>PubNub Simple Chat Room Demo</title>
+	<script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="ChatRoom.css">
+</head>
+<body>
+	
+	<h4>This demo is built on <a href="https://www.pubnub.com" style="color:red">PubNub</a> api.</h4>
+	<hr/>
+
+	<div id="userList" class="table-bordered userList" ></div>
+
+	<button id="leaveButton" class="btn btn-danger leaveButton" onclick="leave()">Leave</button>
+
+	<div id="chatHistory" class="table-bordered chatHistory"></div>
+
+	<input type="text" id="message" placeholder="Enter your message here" class="message"/>
+
+	<button id="sendButton" class="btn btn-primary sendButton">Send</button>
+
+	<script type="text/javascript">
+		(function() { debugger;
+			var publish_key = 'pub-c-39594782-c4b0-4fb3-80fe-74e262353bf6';
+			var subscribe_key = 'sub-c-7ae61028-e9dd-11e3-92e7-02ee2ddab7fe';
+			channel = 'ChatRoomDemo';
+			var username = window.location.search.substring(1).split('=')[1];
+			pubnub =PUBNUB.init({
+				publish_key : publish_key,
+				subscribe_key : subscribe_key,
+				uuid : username
+			});
+
+			pubnub.subscribe({
+				channel : channel,
+				callback : function(message) { debugger;
+					$('#chatHistory')[0].innerHTML = message + '<br/>' + $('#chatHistory')[0].innerHTML; 
+				},
+				presence : function(state) { debugger;
+					if (state.action == 'join') {
+						if ($('#userList').text().indexOf(state.uuid) == -1) {
+							$('#userList')[0].innerHTML = state.uuid + '<br/>' + $('#userList')[0].innerHTML;
+						}
+					} else if (state.action == 'leave' || state.action == 'timeout') {
+						var index = $('#userList').text().indexOf(state.uuid);
+						if ( index !== -1) {
+							$('#userList')[0].innerHTML = 
+								$('#userList')[0].innerHTML.substring(0,index) + 
+								$('#userList')[0].innerHTML.substring(index+state.uuid.length);
+						}
+					}
+					
+				}
+			});
+
+			pubnub.bind('click', pubnub.$('sendButton'), function(e) { debugger;
+				pubnub.publish({
+					channel : channel, 
+					message : pubnub.get_uuid() + ' : '  + $('#message').val()
+				});
+				$('#message').val('');
+			});
+		})();
+	</script>
+
+	<script type="text/javascript">
+		function leave() { debugger;
+			pubnub.unsubscribe({
+				channel : channel
+			}) ;
+			window.location = 'Login.html';
+		}
+	</script>
+</body>
+</html>

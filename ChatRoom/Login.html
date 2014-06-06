@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	<title>PubNub Simple Chat Room Demo</title>
+	<script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="ChatRoom.css">
+</head>
+<body>
+	<h1 class="welcome"> Welcome to Chat Room Demo</h1>
+	<input id="userName" type="text" placeholder="Place enter your name here" class="userNameBar" />
+	<button id="joinButton" class="btn btn-primary joinButton" onclick="joinRoom()">Join</button>
+
+	<script type="text/javascript">
+		function joinRoom() { debugger;
+			var uuid = $('#userName').val();
+			window.location = 'ChatRoom.html?uuid=' + uuid; 
+		}
+	</script>
+</body>
+</html>

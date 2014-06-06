@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+	<title>Receiver Two</title>
+	<script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+</head>
+<body>
+<div id="output"></div>
+
+<script type="text/javascript">
+	var publish_key = 'pub-c-39594782-c4b0-4fb3-80fe-74e262353bf6';
+	var subscribe_key = 'sub-c-7ae61028-e9dd-11e3-92e7-02ee2ddab7fe';
+	var channel = 'Multiple-receiver-test';
+	(function() {
+		var pubnub =PUBNUB.init({
+			publish_key : publish_key,
+			subscribe_key : subscribe_key
+		});
+
+		pubnub.subscribe({
+			channel:channel,
+			message: updateMessage
+		});
+
+		function updateMessage(m) {
+			pubnub.$('output').innerHTML = "Receiver two receives : " + m;
+		}
+	})();
+</script>
+</body>
+</html>

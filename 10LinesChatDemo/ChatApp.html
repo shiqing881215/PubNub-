@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>PubNub Chat App</title>
+	<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.1/css/bootstrap.min.css">
+	<script src=http://cdn.pubnub.com/pubnub.min.js></script>
+</head>
+<body>
+	<div>Enter chat here</div>
+	<div><input id="input" placeholder="Type here" /></div>
+
+	<div>Chat output</div>
+	<div id="output" />
+
+	<script type="text/javascript">
+		(function() {
+			var output = PUBNUB.$('output'),
+				input = PUBNUB.$('input'),
+				channel = 'chat';
+			// Listen to the channel and if get any response back, call the callback
+			PUBNUB.subscribe({
+				channel : channel,
+				callback : function(text) {
+					output.innerHTML = ('' + text).replace(/[<>]/g, '') + '<br>' + output.innerHTML;
+				}
+			});
+			// If press enter, then broadcast the news on the channel
+			PUBNUB.bind('keyup', input, function(e) {
+				if ((e.keyCode || e.charCode) === 13) {
+					PUBNUB.publish({
+						channel : channel, message : input.value, x : (input.value='')
+					});
+				} 					
+			});
+		})();
+	</script>
+</body>
+</html>
