@@ -44,12 +44,12 @@
 						if ($('#userList').text().indexOf(state.uuid) == -1) {
 							$('#userList')[0].innerHTML = state.uuid + '<br/>' + $('#userList')[0].innerHTML;
 						}
-					} else if (state.action == 'leave' || state.action == 'timeout') {
-						var index = $('#userList').text().indexOf(state.uuid);
+					} else if (state.action == 'leave' || state.action == 'timeout') { 
+						var index = $('#userList')[0].innerHTML.indexOf(state.uuid);
 						if ( index !== -1) {
 							$('#userList')[0].innerHTML = 
 								$('#userList')[0].innerHTML.substring(0,index) + 
-								$('#userList')[0].innerHTML.substring(index+state.uuid.length);
+								$('#userList')[0].innerHTML.substring(index+state.uuid.length+4);
 						}
 					}
 					
@@ -71,7 +71,8 @@
 			pubnub.unsubscribe({
 				channel : channel
 			}) ;
-			window.location = 'Login.html';
+			console.log('unsubscribe');
+			setTimeout( function() {window.location = 'Login.html'}, 1000 );
 		}
 	</script>
 </body>
