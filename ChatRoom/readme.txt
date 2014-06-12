@@ -8,3 +8,4 @@ How to use
 4. Console is the test file for you to observe the channel state
 
 For YouTube demo, visit here
+https://www.youtube.com/watch?v=6dQVBc7KkiM&feature=youtu.be
