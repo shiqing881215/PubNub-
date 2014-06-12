@@ -69,10 +69,11 @@
 	<script type="text/javascript">
 		function leave() { 
 			pubnub.unsubscribe({
-				channel : channel
-			}) ;
-			console.log('unsubscribe');
-			setTimeout( function() {window.location = 'Login.html'}, 1000 );
+				channel : channel,
+				callback : function() {
+					window.location = 'Login.html';
+				}
+			});
 		}
 	</script>
 </body>
